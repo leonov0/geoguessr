@@ -1,6 +1,6 @@
-# App Name
+# GeoGuessr Clone
 
-App description
+Geographic Guessing Game
 
 ## 1. Prerequisites
 

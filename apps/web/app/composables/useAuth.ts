@@ -2,6 +2,7 @@ import { useFetchApi } from './useFetchApi';
 
 export interface User {
   id: string;
+  email: string;
   username: string;
 }
 
@@ -11,6 +12,7 @@ export function useAuth() {
   const pending = useState('auth-pending', () => true);
 
   async function fetchUser() {
+    if (!pending.value) return;
     try {
       const data = await fetchApi<{ user: User }>('/auth/me');
       user.value = data.user;
@@ -31,12 +33,10 @@ export function useAuth() {
   }
 
   async function register(email: string, username: string, password: string) {
-    const data = await fetchApi<{ user: User }>('/auth/register', {
+    await fetchApi('/auth/register', {
       method: 'POST',
       body: { email, username, password },
     });
-    user.value = data.user;
-    return data.user;
   }
 
   async function logout() {

@@ -4,6 +4,7 @@
       <USkeleton class="h-9 w-24" />
     </template>
     <template v-else-if="user">
+      <UButton to="/history" variant="ghost" size="sm">History</UButton>
       <UButton variant="ghost" :loading="loggingOut" @click="handleLogout">
         Log out
       </UButton>

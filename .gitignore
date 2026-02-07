@@ -1,0 +1,32 @@
+# Dependencies
+node_modules
+
+# Local env files
+.env
+
+# Turbo
+.turbo
+
+# Build Outputs
+build
+dist
+.output
+
+# Misc
+.DS_Store
+
+# Nuxt
+.data
+.nuxt
+.nitro
+.cache
+
+# Logs
+logs
+*.log
+
+# Temp files
+tmp
+
+# Prisma
+apps/api/src/generated

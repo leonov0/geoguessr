@@ -16,5 +16,6 @@ import { PrismaModule } from '../prisma/prisma.module';
     SessionSerializer,
     AuthenticatedGuard,
   ],
+  exports: [AuthenticatedGuard],
 })
 export class AuthModule {}

@@ -19,9 +19,12 @@ model User {
   email        String    @unique
   username     String    @unique
   passwordHash String
+  bestScore    Int?      @default(0)
+  bestGameId   String?   @db.Uuid
   createdAt    DateTime  @default(now())
   updatedAt    DateTime  @updatedAt
   sessions     Session[]
+  games        Game[]
 }
 
 model Session {
@@ -31,4 +34,56 @@ model Session {
   userId    String   @db.Uuid
   createdAt DateTime @default(now())
   user      User     @relation(fields: [userId], references: [id])
+}
+
+model Location {
+  id       String      @id @default(uuid(7)) @db.Uuid
+  imageUrl String
+  x        Int
+  y        Int
+  rounds   GameRound[]
+}
+
+model Game {
+  id          String      @id @default(uuid(7)) @db.Uuid
+  userId      String      @db.Uuid
+  status      GameStatus  @default(active)
+  totalScore  Int         @default(0)
+  completedAt DateTime?
+  createdAt   DateTime    @default(now())
+  user        User        @relation(fields: [userId], references: [id])
+  rounds      GameRound[]
+  share       GameShare?
+
+  @@index([userId, completedAt(sort: Desc)])
+  @@index([totalScore(sort: Desc)])
+}
+
+enum GameStatus {
+  active
+  completed
+}
+
+model GameRound {
+  id             String    @id @default(uuid(7)) @db.Uuid
+  gameId         String    @db.Uuid
+  locationId     String    @db.Uuid
+  roundIndex     Int
+  roundStartedAt DateTime?
+  guessX         Int?
+  guessY         Int?
+  distance       Int?
+  points         Int?
+  submittedAt    DateTime?
+  game           Game      @relation(fields: [gameId], references: [id], onDelete: Cascade)
+  location       Location  @relation(fields: [locationId], references: [id])
+
+  @@index([submittedAt])
+}
+
+model GameShare {
+  id     String @id @default(uuid(7)) @db.Uuid
+  gameId String @unique @db.Uuid
+  token  String @unique
+  game   Game   @relation(fields: [gameId], references: [id], onDelete: Cascade)
 }
